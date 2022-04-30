@@ -11,10 +11,11 @@ class ProductosContainer extends Container {
                   this.id = 1;
             }
       }
-      saveProduct(nombre, descripcion, codigo, foto, precio, stock) {
+      saveProduct(timestamp, nombre, descripcion, codigo, foto, precio, stock) {
             let productos = this.getAll();
             let producto = {
                   id:this.id, 
+                  timestamp: timestamp,
                   nombre: nombre, 
                   descripcion: descripcion, 
                   codigo: codigo, 

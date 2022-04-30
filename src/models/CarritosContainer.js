@@ -15,6 +15,17 @@ class CarritosContainer extends Container {
             let carritos = this.obtenerDatos();
             return carritos;
       }
+      saveCarrito(timestamp, productos){
+            let carritos = this.getAll();
+            let carrito = {
+                  id: this.id,
+                  tiemestamp: timestamp,
+                  productos: productos
+            }
+            carritos.push(carrito);
+            this.guardarArchivo(carritos)
+            this.id++;
+      }
 }
 
 module.exports = { CarritosContainer }

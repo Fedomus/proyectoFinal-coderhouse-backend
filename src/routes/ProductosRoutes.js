@@ -18,8 +18,9 @@ routerProductos.get('/:id', (req, resp) => {
     
 routerProductos.post('/', (req, resp) => { // incorporar productos al listado (disponible para administradores)
       let producto = req.body;
+      producto.timestamp = Date.now()
       if (producto.nombre && producto.descripcion && producto.codigo && producto.foto && producto.precio && producto.stock) {
-            productosContainer.saveProduct(producto.nombre, producto.descripcion, producto.codigo, producto.foto, producto.precio, producto.stock);
+            productosContainer.saveProduct(producto.timestamp, producto.nombre, producto.descripcion, producto.codigo, producto.foto, producto.precio, producto.stock);
             resp.json({result: 'Producto guardado', producto: producto});
       } else {
             resp.json({result: 'El producto no pudo ser guardado'});
