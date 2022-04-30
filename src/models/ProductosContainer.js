@@ -5,7 +5,11 @@ class ProductosContainer extends Container {
             super('./src/data/productos.json');
             let productos = this.getAll();
             let ultimo = productos[productos.length-1];
-            this.id = ultimo.id+1 || 1;
+            if (ultimo){
+                  this.id = ultimo.id+1;
+            } else {
+                  this.id = 1;
+            }
       }
       saveProduct(nombre, descripcion, codigo, foto, precio, stock) {
             let productos = this.getAll();
@@ -27,19 +31,34 @@ class ProductosContainer extends Container {
             let productos = this.obtenerDatos();
             return productos;
       }
-    
       getById(id) {
             let productos = this.getAll();
-            let producto = null;
-            if(productos.length > 0) {
-                  let element = productos.find(elem => elem.id == id);
-                  if(element) {
-                        producto = element;
-                  }
+            let producto = productos.find( p => p.id == id) || null;
+            if (producto){
+                  return producto;
+            } else {
+                  console.log('No se encontro producto con ese ID');
             }
-            return producto;
+      }
+      deleteById(id) {
+            let productos = this.getAll();
+            let producto = this.getById(id);
+            if (producto) {
+                  let indice = productos.indexOf(producto);
+                  productos.splice(indice, 1);
+                  this.guardarArchivo(productos);
+            } else {
+                  console.log('No se encontro producto con ese ID');
+            }
+      }
+      updateById(id, productoActualizado){
+            let productos = this.getAll();
+            let producto = this.getById(id);
+            let indice = productos.indexOf(producto)
+            productos.slice(indice, 1, productoActualizado)
+            this.guardarArchivo(productos)
       }
 }
     
 
-module.exports = { PlayerContainer }
+module.exports = { ProductosContainer }

@@ -9,14 +9,14 @@ class Container{
             fs.writeFileSync(this.nombreArchivo, JSON.stringify(data));
       }
 
-      getContentFile() {
+      obtenerDatos() {
             let content = [];
             try {
                   let file = fs.readFileSync(this.nombreArchivo, 'utf-8');
                   content = JSON.parse(file);
             } 
             catch (error) {
-                  this.saveInFile(content);
+                  this.guardarArchivo(content);
                   console.log(`Creacion del archivo ${this.nombreArchivo}`);
             }
             return content;
