@@ -31,7 +31,7 @@ routerProductos.put('/:id', (req, resp) => { // Actualiza un producto por su id 
       let productoAnterior = productosContainer.getById(id);
       let productoActualizado = req.body;
       if (productoActualizado.nombre && productoActualizado.descripcion && productoActualizado.codigo && productoActualizado.foto && productoActualizado.precio && productoActualizado.stock)
-      productosContainer.updateById(id, productoActualizado)
+      productosContainer.updateById(id, productoActualizado.nombre, productoActualizado.descripcion, productoActualizado.codigo, productoActualizado.foto, productoActualizado.precio, productoActualizado.stock)
       resp.json({
             productoAnterior : productoAnterior,
             productoActualizado : productoActualizado

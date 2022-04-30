@@ -51,11 +51,20 @@ class ProductosContainer extends Container {
                   console.log('No se encontro producto con ese ID');
             }
       }
-      updateById(id, productoActualizado){
+      updateById(id, nombre, descripcion, codigo, foto, precio, stock){
             let productos = this.getAll();
-            let producto = this.getById(id);
-            let indice = productos.indexOf(producto)
-            productos.slice(indice, 1, productoActualizado)
+            let productoAnterior = this.getById(id);
+            let productoActualizado = {
+                  id: productoAnterior.id,
+                  nombre: nombre,
+                  descripcion: descripcion,
+                  codigo: codigo,
+                  foto: foto,
+                  precio: precio,
+                  stock: stock
+            }
+            let indice = productos.indexOf(productoAnterior)
+            productos.splice(indice, 1, productoActualizado)
             this.guardarArchivo(productos)
       }
 }
