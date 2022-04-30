@@ -1,0 +1,13 @@
+[
+  {
+    "timestamp": 1651272077153,
+    "productos": [{"nombre": "heladera",
+      "id": 1}],
+    "id": 1
+  },
+  {
+    "timestamp": 1651272455158,
+    "productos": [],
+    "id": 2
+  }
+]
