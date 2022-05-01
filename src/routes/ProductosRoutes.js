@@ -20,20 +20,19 @@ routerProductos.post('/', (req, resp) => { // incorporar productos al listado (d
       let producto = req.body;
       producto.timestamp = Date.now()
       if (producto.nombre && producto.descripcion && producto.codigo && producto.foto && producto.precio && producto.stock) {
-            productosContainer.saveProduct(producto.timestamp, producto.nombre, producto.descripcion, producto.codigo, producto.foto, producto.precio, producto.stock);
-            resp.json({result: 'Producto guardado', producto: producto});
+            let productoGuardado = productosContainer.saveProduct(producto.timestamp, producto.nombre, producto.descripcion, producto.codigo, producto.foto, producto.precio, producto.stock);
+            resp.json({result: 'Producto guardado', producto: productoGuardado});
       } else {
             resp.json({result: 'El producto no pudo ser guardado'});
       }
 });
     
 routerProductos.put('/:id', (req, resp) => { // Actualiza un producto por su id (disponible para administradores)
-      let id = parseInt(req.params.id);
+      let id = req.params.id;
       let productoAnterior = productosContainer.getById(id);
-      let productoActualizado = req.body;
-      if (productoActualizado.nombre && productoActualizado.descripcion && productoActualizado.codigo && productoActualizado.foto && productoActualizado.precio && productoActualizado.stock)
-      productosContainer.updateById(id, productoActualizado.nombre, productoActualizado.descripcion, productoActualizado.codigo, productoActualizado.foto, productoActualizado.precio, productoActualizado.stock)
+      let productoActualizado = productosContainer.updateById(id, req.body);
       resp.json({
+            result: 'Producto Actualizado',
             productoAnterior : productoAnterior,
             productoActualizado : productoActualizado
       })

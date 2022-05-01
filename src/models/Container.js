@@ -5,11 +5,11 @@ class Container{
             this.nombreArchivo = nombreArchivo;
       }
       
-      guardarArchivo(data) {
+      saveData(data) {
             fs.writeFileSync(this.nombreArchivo, JSON.stringify(data));
       }
 
-      obtenerDatos() {
+      getData() {
             let content = [];
             try {
                   let file = fs.readFileSync(this.nombreArchivo, 'utf-8');

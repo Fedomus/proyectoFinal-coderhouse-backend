@@ -24,12 +24,13 @@ class ProductosContainer extends Container {
                   stock: stock
             }
             productos.push(producto);
-            this.guardarArchivo(productos);
+            this.saveData(productos);
             this.id++;
+            return producto;
       }
 
       getAll() {
-            let productos = this.obtenerDatos();
+            let productos = this.getData();
             return productos;
       }
       getById(id) {
@@ -47,26 +48,35 @@ class ProductosContainer extends Container {
             if (producto) {
                   let indice = productos.indexOf(producto);
                   productos.splice(indice, 1);
-                  this.guardarArchivo(productos);
+                  this.saveData(productos);
             } else {
                   console.log('No se encontro producto con ese ID');
             }
       }
-      updateById(id, nombre, descripcion, codigo, foto, precio, stock){
+      updateById(id, producto){
             let productos = this.getAll();
             let productoAnterior = this.getById(id);
-            let productoActualizado = {
-                  id: productoAnterior.id,
-                  nombre: nombre,
-                  descripcion: descripcion,
-                  codigo: codigo,
-                  foto: foto,
-                  precio: precio,
-                  stock: stock
-            }
             let indice = productos.indexOf(productoAnterior)
+            productos.splice(indice, 1, producto)
+            this.saveData(productos)
+            return producto;
+      }
+      susProd(id){
+            let productos = this.getAll();
+            let producto = this.getById(id);
+            let indice = productos.indexOf(producto)
+            producto.stock --;
+            productos.splice(indice, 1, producto)
+            this.saveData(productos)
+      }
+      addProduct(id, cantidad){
+            let productos = this.getAll();
+            let producto = this.getById(id);
+            let productoActualizado = producto;
+            let indice = productos.indexOf(producto)
+            productoActualizado.stock += cantidad;
             productos.splice(indice, 1, productoActualizado)
-            this.guardarArchivo(productos)
+            this.saveData(productos)
       }
 }
     
