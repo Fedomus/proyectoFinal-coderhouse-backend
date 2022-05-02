@@ -16,7 +16,7 @@ class Container{
                   content = JSON.parse(file);
             } 
             catch (error) {
-                  this.guardarArchivo(content);
+                  this.saveData(content);
                   console.log(`Creacion del archivo ${this.nombreArchivo}`);
             }
             return content;

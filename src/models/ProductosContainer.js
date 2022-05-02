@@ -45,8 +45,9 @@ class ProductosContainer extends Container {
       deleteById(id) {
             let productos = this.getAll();
             let producto = this.getById(id);
-            if (producto) {
-                  let indice = productos.indexOf(producto);
+            if (productos && producto) {
+                  let productoElegido = productos.find( p => p.id == producto.id)
+                  let indice = productos.indexOf(productoElegido);
                   productos.splice(indice, 1);
                   this.saveData(productos);
             } else {
@@ -63,15 +64,16 @@ class ProductosContainer extends Container {
       }
       susProd(id){
             let productos = this.getAll();
-            let producto = this.getById(id);
+            let producto = productos.find( p => p.id == id);
+            let productoActualizado = producto;
             let indice = productos.indexOf(producto)
-            producto.stock --;
-            productos.splice(indice, 1, producto)
+            productoActualizado.stock --;
+            productos.splice(indice, 1, productoActualizado)
             this.saveData(productos)
       }
       addProduct(id, cantidad){
             let productos = this.getAll();
-            let producto = this.getById(id);
+            let producto = productos.find( p => p.id == id)
             let productoActualizado = producto;
             let indice = productos.indexOf(producto)
             productoActualizado.stock += cantidad;

@@ -45,11 +45,14 @@ routerCarritos.get('/:id/productos', (req, resp) => { // listar todos los produc
 routerCarritos.post('/:id/productos', (req, resp) => { // incorporar productos al carrito por su id de producto
       let idCarrito = req.params.id;
       let idProducto = req.body.id;
+      let carrito = carritosContainer.getById(idCarrito);
       let producto = productosContainer.getById(idProducto);
-      if (idCarrito && idProducto){
+      if (carrito){
             carritosContainer.addProduct(idCarrito, producto);
             productosContainer.susProd(req.body.id)
             resp.json({productoAñadido: producto})
+      } else {
+            resp.json({result: 'No se encontro carrito con ese ID'})
       }
 })
     
