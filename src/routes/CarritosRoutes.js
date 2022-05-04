@@ -48,7 +48,7 @@ routerCarritos.post('/:id/productos', (req, resp) => { // incorporar productos a
       if (carrito){
             carritosContainer.addProduct(idCarrito, producto);
             productosContainer.susProd(req.body.id)
-            resp.sendFile('../../public/index.html', {root: __dirname })
+            resp.json({productoAñadido: producto})
       } else {
             resp.json({result: 'No se encontro carrito con ese ID'})
       }
