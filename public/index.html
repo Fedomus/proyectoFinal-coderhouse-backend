@@ -11,41 +11,14 @@
 <body>
       <div class="nav">
                   <div class="btn-box">
-                        <a href="/">Agregar Producto</a>
-                        <a href="/api/productos">Ver produtos</a>
-                        <a href="/api/carritos">Carrito</a>
+                        <button id="cargarProducto">Agregar Producto</button>
+                        <button id="verProductos">Ver produtos</button>
+                        <button id="verCarrito">Carrito</button>
                   </div>
       </div>
-      <div class="app">
+      <div id="app" class="app">
 
-            <form class="form" action="/api/productos" method="post">
-                  <h1>Ingresar Producto</h1>
-                  <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre">
-                  </div>
-                  <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripcion</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
-                  </div>
-                  <div class="mb-3">
-                        <label for="codigo" class="form-label">Codigo</label>
-                        <input type="text" class="form-control" id="codigo" name="codigo">
-                  </div>
-                  <div class="mb-3">
-                        <label for="foto" class="form-label">URL Imagen</label>
-                        <input type="text" class="form-control" id="foto" name="foto">
-                  </div>
-                  <div class="mb-3">
-                        <label for="precio" class="form-label">Precio</label>
-                        <input type="number" class="form-control" id="precio" name="precio">
-                  </div>
-                  <div class="mb-3">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" name="stock">
-                  </div>
-                  <input type="submit" value="Enviar">
-            </form>
+            
       </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>

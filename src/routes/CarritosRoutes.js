@@ -27,8 +27,6 @@ routerCarritos.delete('/:id', (req, resp) => { // Vacía un carrito y lo elimina
       } else {
             resp.json({result: 'No existe carrito con ese ID'})
       }
-     
-      
 })
     
 routerCarritos.get('/:id/productos', (req, resp) => { // listar todos los productos guardados en el carrito
@@ -50,7 +48,7 @@ routerCarritos.post('/:id/productos', (req, resp) => { // incorporar productos a
       if (carrito){
             carritosContainer.addProduct(idCarrito, producto);
             productosContainer.susProd(req.body.id)
-            resp.json({productoAñadido: producto})
+            resp.sendFile('../../public/index.html', {root: __dirname })
       } else {
             resp.json({result: 'No se encontro carrito con ese ID'})
       }
