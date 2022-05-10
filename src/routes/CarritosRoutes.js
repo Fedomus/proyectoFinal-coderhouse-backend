@@ -10,7 +10,7 @@ let productosContainer = new ProductosContainer();
 
 routerCarritos.post('/', (req, resp) => {  //Crea un carrito y devuelve su id
       let carritoCreado = {};
-      carritoCreado.timestamp = Date.now();
+      carritoCreado.timestamp = new Date().toLocaleString();
       carritoCreado.productos = [];
       let carrito = carritosContainer.saveCarrito(carritoCreado.timestamp, carritoCreado.productos);
       resp.json({result: 'carrito creado', carrito: carrito})

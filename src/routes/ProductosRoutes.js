@@ -18,7 +18,7 @@ routerProductos.get('/:id', (req, resp) => {
     
 routerProductos.post('/', (req, resp) => { // incorporar productos al listado (disponible para administradores)
       let producto = req.body;
-      producto.timestamp = Date.now()
+      producto.timestamp = new Date().toLocaleString();
       if (producto.nombre && producto.descripcion && producto.codigo && producto.foto && producto.precio && producto.stock) {
             let productoGuardado = productosContainer.saveProduct(producto.timestamp, producto.nombre, producto.descripcion, producto.codigo, producto.foto, producto.precio, producto.stock);
             resp.json({result: 'Producto guardado', producto: productoGuardado});

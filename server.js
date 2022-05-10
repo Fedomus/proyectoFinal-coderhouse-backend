@@ -12,6 +12,10 @@ app.use(express.static('public'));
 app.use('/api/productos', routerProductos);
 app.use('/api/carrito', routerCarritos);
 
+app.get('*', (req, resp) => {
+  resp.json({error: -2, descripcion: `la ruta ${req.url} y el método ${req.method} no no esta implementado`})
+})
+
 //--------------------------------------------------------------------------------//
 const server = app.listen(port, () => {
   console.info(`Servidor escuchando en puerto: ${port}`);

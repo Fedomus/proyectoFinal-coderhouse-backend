@@ -6,7 +6,7 @@ class Container{
       }
       
       saveData(data) {
-            fs.writeFileSync(this.nombreArchivo, JSON.stringify(data));
+            fs.writeFileSync(this.nombreArchivo, JSON.stringify(data, null, 2));
       }
 
       getData() {

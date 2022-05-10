@@ -48,13 +48,6 @@ btnCargarProducto.onclick = () => {
       `
 }
 
-fetch('http://localhost:8080/api/productos')
-.then( response => response.json())
-.then( data => {
-      localStorage.setItem('productos', JSON.stringify(data));
-}).catch( mensaje => console.error(mensaje));
-
-
 function renderProductos(productos){
       const html = productos.map((elem, index) => {
                   return(`
@@ -63,17 +56,22 @@ function renderProductos(productos){
                         <h5 class="card-text">$${elem.precio}</h5>
                         <span class="card-title">${elem.nombre}</span>
                         <form action="/api/carrito/1/productos" method="post">
-                              <button type="submit" name="" value="${elem.id}" class="btn-link">Agregar al carrito</button>
+                              <button type="submit" name="" value="${elem.id}" class="btn btn-link">Agregar al carrito</button>
                         </form>
                   </div>`)
       })
       document.querySelector('#app').innerHTML = html;
 }
 
-const productos = [];
-let data = JSON.parse(localStorage.getItem('productos')) || [];
-data.productos.map(producto => productos.push(new Producto(producto)));
-btnVerProductos.onclick = () => { renderProductos(productos)}
+
+btnVerProductos.onclick = async () => { 
+      const productos = [];
+      await fetch('http://localhost:8080/api/productos')
+      .then( response => response.json())
+      .then( data => {
+            data.productos.map(producto => productos.push(new Producto(producto)));;
+      }).catch( mensaje => console.error(mensaje));
+      renderProductos(productos)
+}
 
 
-const carrito = []
