@@ -11,13 +11,24 @@ class Producto {
       }
 }
 
-const btnCargarProducto = document.querySelector('#cargarProducto');
-const btnVerProductos = document.querySelector('#verProductos');
-const btnverCarrito = document.querySelector('#verCarrito');
+class ProductoModel {
+      constructor(){
+            this.productos = [];
+            fetch('http://localhost:8080/api/productos')
+            .then( response => response.json())
+            .then( data => {
+                  data.productos.map(producto => this.productos.push(new Producto(producto)));;
+            })
+      }
+      buscarProducto(id){
+            return this.productos.find( producto => producto.id == id);
+      }
+}
 
-btnCargarProducto.onclick = () => {
-      document.querySelector('#app').innerHTML = `
-      <form class="form" action="/api/productos" method="post">
+class ProductoView {
+      renderForm(padre){
+            document.querySelector(padre).innerHTML = `
+            <form class="form" action="/api/productos" method="post">
                   <h1>Ingresar Producto</h1>
                   <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
@@ -46,32 +57,67 @@ btnCargarProducto.onclick = () => {
                   <input type="submit" value="Enviar">
             </form>
       `
-}
+      }
 
-function renderProductos(productos){
-      const html = productos.map((elem, index) => {
+      renderProductos(padre, productos, callback){
+            const html = productos.map((elem, index) => {
                   return(`
-                  <div class="card">
+                  <div class="card" id="${elem.id}">
                         <img src="${elem.foto}" class="card-img-top img-cards">
                         <h5 class="card-text">$${elem.precio}</h5>
                         <span class="card-title">${elem.nombre}</span>
-                        <form action="/api/carrito/1/productos" method="post">
-                              <button type="submit" name="" value="${elem.id}" class="btn btn-link">Agregar al carrito</button>
-                        </form>
                   </div>`)
-      })
-      document.querySelector('#app').innerHTML = html;
+            })
+            document.querySelector(padre).innerHTML = html;
+            document.querySelectorAll(".card").forEach(b => b.onclick = callback);
+      }
+      verProducto(padre, producto) {
+            let listaStock = [];
+            for (let i = 1; i <= producto.stock; i++){
+                  listaStock.push(i)
+            }
+            const html = `
+                        <h4 id="${producto.id}">${producto.nombre}</h4>
+                        <h5>$${producto.precio}</h5>
+                        <span>Descripcion</span>
+                        <br>
+                        <p>Cantidad:</p>
+                        <select id="cantidad" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                              <option>${listaStock.join("</option><option>")}</option>
+                        </select>
+                        <br>
+                        <button class="btn btn-primary btnComprar">Comprar</button>
+                         `
+            document.querySelector(padre).innerHTML = html;
+      }
 }
 
 
-btnVerProductos.onclick = async () => { 
-      const productos = [];
-      await fetch('http://localhost:8080/api/productos')
-      .then( response => response.json())
-      .then( data => {
-            data.productos.map(producto => productos.push(new Producto(producto)));;
-      }).catch( mensaje => console.error(mensaje));
-      renderProductos(productos)
+class ProductoController {
+      constructor(productoModel, productoView) {
+            this.productoModel = productoModel;
+            this.productoView = productoView;
+      }
+      mostrarForm(padre) {
+            this.productoView.renderForm(padre)
+      }
+
+      mostrarProductos(padre) {
+            const eventoVerProducto = (e) => {
+                  let id = e.target.parentNode.id;
+                  let seleccion = this.productoModel.buscarProducto(id);
+                  this.productoView.verProducto(padre, seleccion);
+            }
+            this.productoView.renderProductos(padre, this.productoModel.productos, eventoVerProducto)
+      }
 }
 
+const app = new ProductoController(new ProductoModel(), new ProductoView());
+
+const btnCargarProducto = document.querySelector('#cargarProducto');
+const btnVerProductos = document.querySelector('#verProductos');
+const btnverCarrito = document.querySelector('#verCarrito');
+
+btnVerProductos.onclick = () => {app.mostrarProductos('#app')}
+btnCargarProducto.onclick = () => {app.mostrarForm('#app')}
 

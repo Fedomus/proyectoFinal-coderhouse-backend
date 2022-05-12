@@ -1,6 +1,12 @@
+.nav{
+      display: flex;
+      justify-content: center;
+      padding: 50px;
+}
 .app{
       display: flex;
       justify-content: center;
+      padding-bottom: 100px;
 }
 .form{
       width: 500px;
@@ -8,4 +14,10 @@
 .img-cards{
       height: 150px;
       width: 150px;
+}
+.btn{
+      border: 1px solid black;
+}
+.card :hover{
+      cursor: pointer;
 }
