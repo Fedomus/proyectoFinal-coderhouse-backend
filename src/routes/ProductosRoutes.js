@@ -9,7 +9,7 @@ routerProductos.get('/', (req, resp) => { // listar todos los productos disponib
       let producto = productosContainer.getAll();
       resp.json({productos: producto});
 });
-    
+
 routerProductos.get('/:id', (req, resp) => { 
       let id = parseInt(req.params.id)
       let productoElegido = productosContainer.getById(id);

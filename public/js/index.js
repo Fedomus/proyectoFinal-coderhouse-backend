@@ -1,4 +1,5 @@
 class Producto {
+
       constructor(data){
             this.id = parseInt(data.id); 
             this.timestamp = data.timestamp; 
@@ -9,9 +10,11 @@ class Producto {
             this.precio = data.precio; 
             this.stock = data.stock;
       }
+
 }
 
 class ProductoModel {
+
       constructor(){
             this.productos = [];
             fetch('http://localhost:8080/api/productos')
@@ -23,9 +26,11 @@ class ProductoModel {
       buscarProducto(id){
             return this.productos.find( producto => producto.id == id);
       }
+
 }
 
 class ProductoView {
+
       renderForm(padre){
             document.querySelector(padre).innerHTML = `
             <form class="form" action="/api/productos" method="post">
@@ -60,17 +65,19 @@ class ProductoView {
       }
 
       renderProductos(padre, productos, callback){
-            const html = productos.map((elem, index) => {
-                  return(`
-                  <div class="card" id="${elem.id}">
-                        <img src="${elem.foto}" class="card-img-top img-cards">
-                        <h5 class="card-text">$${elem.precio}</h5>
-                        <span class="card-title">${elem.nombre}</span>
-                  </div>`)
+            document.querySelector(padre).innerHTML = productos.map(producto => {
+                  return`<div class="card">
+                              <img src="${producto.foto}" class="card-img-top img-cards">
+                              <div class="card-body">
+                                    <h5 class="card-text">$${producto.precio}</h5>
+                                    <p class="card-title">${producto.nombre}</p>
+                                    <a id="" href="/ver-productos/${producto.id}" class="btn btn-primary verDetalle">Ver detalle</a>
+                              </div>       
+                        </div>`
             })
-            document.querySelector(padre).innerHTML = html;
-            document.querySelectorAll(".card").forEach(b => b.onclick = callback);
+            document.querySelectorAll(".verDetalle").forEach(b => b.onclick = callback);
       }
+
       verProducto(padre, producto) {
             let listaStock = [];
             for (let i = 1; i <= producto.stock; i++){
@@ -90,34 +97,56 @@ class ProductoView {
                          `
             document.querySelector(padre).innerHTML = html;
       }
+
 }
 
 
 class ProductoController {
+
       constructor(productoModel, productoView) {
             this.productoModel = productoModel;
             this.productoView = productoView;
       }
+
       mostrarForm(padre) {
             this.productoView.renderForm(padre)
       }
 
       mostrarProductos(padre) {
             const eventoVerProducto = (e) => {
-                  let id = e.target.parentNode.id;
+                  let id = e.target.id;
                   let seleccion = this.productoModel.buscarProducto(id);
                   this.productoView.verProducto(padre, seleccion);
             }
             this.productoView.renderProductos(padre, this.productoModel.productos, eventoVerProducto)
       }
+
 }
+
 
 const app = new ProductoController(new ProductoModel(), new ProductoView());
 
-const btnCargarProducto = document.querySelector('#cargarProducto');
-const btnVerProductos = document.querySelector('#verProductos');
-const btnverCarrito = document.querySelector('#verCarrito');
+const routes = [
+      { path: 'http://localhost:8080/', action: 'show' },
+      { path: 'http://localhost:8080/agregar-producto', action: 'add'},
+      { path: 'http://localhost:8080/ver-productos', action: 'show' }
+];
+    
+const parseLocation = () => location.href;
+const findActionByPath = (path, routes) => routes.find(r => r.path == path)
 
-btnVerProductos.onclick = () => {app.mostrarProductos('#app')}
-btnCargarProducto.onclick = () => {app.mostrarForm('#app')}
-
+const router = () => {
+      const path = parseLocation();
+      const { action } = findActionByPath(path, routes) || {};
+      switch (action) {
+            case 'show':
+                  app.mostrarProductos('#app');
+                  break;
+            case 'add':
+                  app.mostrarForm('#app')
+                  break
+      }
+}
+    
+window.onload = () => { router(); }
+window.onchange = () => { router(); }
