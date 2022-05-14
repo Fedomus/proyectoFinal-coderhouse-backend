@@ -7,7 +7,7 @@
     "codigo": "xxx",
     "foto": "https://cdn0.iconfinder.com/data/icons/music-and-multimedia-9/64/guitar-instruments-music-256.png",
     "precio": "44300",
-    "stock": 1
+    "stock": 4
   },
   {
     "id": 4,
@@ -27,7 +27,7 @@
     "codigo": "ggg56",
     "foto": "https://cdn0.iconfinder.com/data/icons/music-and-multimedia-8/64/piano-orchestra-instruments-music-256.png",
     "precio": "150000",
-    "stock": "1"
+    "stock": 0
   },
   {
     "id": 6,
@@ -37,6 +37,6 @@
     "codigo": "jhk378",
     "foto": "https://cdn0.iconfinder.com/data/icons/music-and-multimedia-8/64/violin-instruments-music-orchestra-256.png",
     "precio": "45",
-    "stock": 1
+    "stock": 3
   }
 ]

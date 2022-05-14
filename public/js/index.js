@@ -13,21 +13,38 @@ class Producto {
 
 }
 
+
+fetch('http://localhost:8080/api/productos')
+.then( response => response.json())
+.then( data => {
+      const productos = data.productos.map(producto => {return producto})
+      localStorage.setItem('productos', JSON.stringify(productos));
+})
+.catch((err) => console.log(err))
+
+fetch('http://localhost:8080/api/carrito/1/productos')
+.then( response => response.json())
+.then( data => {
+      const carrito = data.map(producto => {return producto})
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+})
+.catch((err) => console.log(err))
+
+
 class ProductoModel {
 
       constructor(){
-            this.productos = [];
-            fetch('http://localhost:8080/api/productos')
-            .then( response => response.json())
-            .then( data => {
-                  data.productos.map(producto => this.productos.push(new Producto(producto)));;
-            })
+            const productos = JSON.parse(localStorage.getItem('productos')) || [];
+            this.productos = productos.map(producto => new Producto(producto));
+            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
       }
+
       buscarProducto(id){
             return this.productos.find( producto => producto.id == id);
       }
 
 }
+
 
 class ProductoView {
 
@@ -64,39 +81,48 @@ class ProductoView {
       `
       }
 
-      renderProductos(padre, productos, callback){
-            document.querySelector(padre).innerHTML = productos.map(producto => {
-                  return`<div class="card">
-                              <img src="${producto.foto}" class="card-img-top img-cards">
-                              <div class="card-body">
-                                    <h5 class="card-text">$${producto.precio}</h5>
-                                    <p class="card-title">${producto.nombre}</p>
-                                    <a id="" href="/ver-productos/${producto.id}" class="btn btn-primary verDetalle">Ver detalle</a>
-                              </div>       
-                        </div>`
+      renderProductos(padre, productos){
+            console.log(productos);
+            const html = productos.map(producto => {
+                        return(`<div class="card" id="">
+                                    <img src="${producto.foto}" class="card-img-top img-cards">
+                                    <div class="card-body">
+                                          <h5 class="card-text">$${producto.precio}</h5>
+                                          <p class="card-text">${producto.descripcion}</p>
+                                          <form action="/api/carrito/1/productos" method="post">
+                                                <button id="" type="submit" class="btn agregar" name="id" value="${producto.id}">Agregar</button>
+                                          </form>
+                                          <form>
+                                                <input id="${producto.id}" type="submit" class="btn editar" name="editar" value="editar">
+                                          </form>
+                                          <fOrm>
+                                                <input id="${producto.id}" type="submit" class="btn eliminar" name="eliminar" value="eliminar">
+                                          </form>
+                                    </div>       
+                              </div>`)
             })
-            document.querySelectorAll(".verDetalle").forEach(b => b.onclick = callback);
-      }
-
-      verProducto(padre, producto) {
-            let listaStock = [];
-            for (let i = 1; i <= producto.stock; i++){
-                  listaStock.push(i)
-            }
-            const html = `
-                        <h4 id="${producto.id}">${producto.nombre}</h4>
-                        <h5>$${producto.precio}</h5>
-                        <span>Descripcion</span>
-                        <br>
-                        <p>Cantidad:</p>
-                        <select id="cantidad" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                              <option>${listaStock.join("</option><option>")}</option>
-                        </select>
-                        <br>
-                        <button class="btn btn-primary btnComprar">Comprar</button>
-                         `
             document.querySelector(padre).innerHTML = html;
       }
+
+      // verProducto(padre, producto) {
+      //       let listaStock = [];
+      //       for (let i = 1; i <= producto.stock; i++){
+      //             listaStock.push(i)
+      //       }
+      //       const html = `
+      //                   <h4 id="${producto.id}">${producto.nombre}</h4>
+      //                   <h5>$${producto.precio}</h5>
+      //                   <span>Descripcion</span>
+      //                   <br>
+      //                   <p>Cantidad:</p>
+      //                   <select id="cantidad" class="form-select form-select-sm" aria-label=".form-select-sm example">
+      //                         <option>${listaStock.join("</option><option>")}</option>
+      //                   </select>
+      //                   <br>
+      //                   <button class="btn btn-primary btnComprar">Comprar</button>
+      //                    `
+      //       document.querySelector(padre).innerHTML = html;
+      // }
 
 }
 
@@ -113,12 +139,15 @@ class ProductoController {
       }
 
       mostrarProductos(padre) {
-            const eventoVerProducto = (e) => {
-                  let id = e.target.id;
-                  let seleccion = this.productoModel.buscarProducto(id);
-                  this.productoView.verProducto(padre, seleccion);
-            }
-            this.productoView.renderProductos(padre, this.productoModel.productos, eventoVerProducto)
+            // const eventoVerProducto = (e) => {
+            //       let id = e.target.id;
+            //       let seleccion = this.productoModel.buscarProducto(id);
+            //       this.productoView.verProducto(padre, seleccion);
+            // }
+            this.productoView.renderProductos(padre, this.productoModel.productos)
+      }
+      mostrarCarrito(padre) {
+            this.productoView.renderCarrito(padre, this.productoModel.carrito)
       }
 
 }
@@ -129,7 +158,8 @@ const app = new ProductoController(new ProductoModel(), new ProductoView());
 const routes = [
       { path: 'http://localhost:8080/', action: 'show' },
       { path: 'http://localhost:8080/agregar-producto', action: 'add'},
-      { path: 'http://localhost:8080/ver-productos', action: 'show' }
+      { path: 'http://localhost:8080/ver-productos', action: 'show' },
+      { path: 'http://localhost:8080/ver-carrito', action: 'chart'}
 ];
     
 const parseLocation = () => location.href;
@@ -144,6 +174,9 @@ const router = () => {
                   break;
             case 'add':
                   app.mostrarForm('#app')
+                  break
+            case 'chart':
+                  app.mostrarCarrito('#app')
                   break
       }
 }

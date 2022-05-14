@@ -23,9 +23,8 @@ app.get('/ver-productos', (req, resp) => {
   resp.sendFile(__dirname + '/public/index.html')
 })
 
-app.get('/ver-productos/:id', (req, resp) => {
+app.get('/ver-carrito', (req, resp) => {
   resp.sendFile(__dirname + '/public/index.html')
-  resp.json(productosContainer.getById(req.params.id))
 })
 
 app.get('*', (req, resp) => {
