@@ -11,7 +11,7 @@
         "codigo": "fsa7ss",
         "foto": "https://cdn3.iconfinder.com/data/icons/musical-instruments-18/100/instruments_microphone_2-256.png",
         "precio": "40000",
-        "stock": 4
+        "stock": 5
       },
       {
         "id": 6,
@@ -21,7 +21,7 @@
         "codigo": "jhk378",
         "foto": "https://cdn0.iconfinder.com/data/icons/music-and-multimedia-8/64/violin-instruments-music-orchestra-256.png",
         "precio": "45",
-        "stock": 2
+        "stock": 4
       },
       {
         "id": 3,
@@ -31,7 +31,7 @@
         "codigo": "xxx",
         "foto": "https://cdn0.iconfinder.com/data/icons/music-and-multimedia-9/64/guitar-instruments-music-256.png",
         "precio": "44300",
-        "stock": 6
+        "stock": 8
       },
       {
         "id": 5,

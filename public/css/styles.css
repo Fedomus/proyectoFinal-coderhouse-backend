@@ -1,9 +1,10 @@
 .header{
-      height: 150px;
+      height: 100px;
       background-color: black;
       color: white;
 }
 .nav{
+      background-color: aliceblue;
       display: flex;
       justify-content: space-between;
       padding: 20px;
@@ -27,6 +28,9 @@
 }
 .btn{
       border: 1px solid black;
+}
+.table{
+      width:500px;
 }
 .footer{
       min-height: 150px;

@@ -19,7 +19,7 @@ app.get('/agregar-producto', (req, resp) => {
   resp.sendFile(__dirname + '/public/index.html')
 })
 
-app.get('/ver-productos', (req, resp) => {
+app.get('/', (req, resp) => {
   resp.sendFile(__dirname + '/public/index.html')
 })
 

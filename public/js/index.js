@@ -13,6 +13,14 @@ class Producto {
 
 }
 
+class Carrito {
+
+      constructor(data){
+            this.productos = data.productos
+      }
+
+}
+
 
 fetch('http://localhost:8080/api/productos')
 .then( response => response.json())
@@ -25,8 +33,8 @@ fetch('http://localhost:8080/api/productos')
 fetch('http://localhost:8080/api/carrito/1/productos')
 .then( response => response.json())
 .then( data => {
-      const carrito = data.map(producto => {return producto})
-      localStorage.setItem('carrito', JSON.stringify(carrito));
+      const productosCarrito = data.productos.map(producto => {return producto})
+      localStorage.setItem('carrito', JSON.stringify(productosCarrito));
 })
 .catch((err) => console.log(err))
 
@@ -36,7 +44,8 @@ class ProductoModel {
       constructor(){
             const productos = JSON.parse(localStorage.getItem('productos')) || [];
             this.productos = productos.map(producto => new Producto(producto));
-            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const productosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            this.productosCarrito = productosCarrito
       }
 
       buscarProducto(id){
@@ -82,47 +91,87 @@ class ProductoView {
       }
 
       renderProductos(padre, productos){
-            console.log(productos);
+            if(productos.lenght > 0{
+                  
+            })
             const html = productos.map(producto => {
                         return(`<div class="card" id="">
                                     <img src="${producto.foto}" class="card-img-top img-cards">
                                     <div class="card-body">
                                           <h5 class="card-text">$${producto.precio}</h5>
                                           <p class="card-text">${producto.descripcion}</p>
+                                          <p>stock: ${producto.stock}</p>
                                           <form action="/api/carrito/1/productos" method="post">
                                                 <button id="" type="submit" class="btn agregar" name="id" value="${producto.id}">Agregar</button>
                                           </form>
-                                          <form>
-                                                <input id="${producto.id}" type="submit" class="btn editar" name="editar" value="editar">
-                                          </form>
-                                          <fOrm>
-                                                <input id="${producto.id}" type="submit" class="btn eliminar" name="eliminar" value="eliminar">
-                                          </form>
+                                          <button class="btn editar">
+                                                Editar
+                                          </button>
+                                          <button type="button" class="btn btn-eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                          Eliminar
+                                          </button>
                                     </div>       
+                              </div>
+                              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                              <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <p>Se va a eliminar permanentmenete el producto, ¿desea continuar?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                          <button class="btn btnEliminar" id="${producto.id}">Aceptar</button>
+                                    </div>
+                              </div>
+                              </div>
                               </div>`)
             })
             document.querySelector(padre).innerHTML = html;
+            document.querySelectorAll('.btnEliminar').forEach( b => b.onclick = async (e) => {
+                  let id = e.target.id
+                  console.log(id);
+                  await fetch(`http://localhost:8080/api/productos/${id}`, {
+                        method: 'DELETE', 
+                  })
+                  .then( res=> {return res.json()
+                  })
+                  .then( data => console.log(data))
+            })
       }
 
-      // verProducto(padre, producto) {
-      //       let listaStock = [];
-      //       for (let i = 1; i <= producto.stock; i++){
-      //             listaStock.push(i)
-      //       }
-      //       const html = `
-      //                   <h4 id="${producto.id}">${producto.nombre}</h4>
-      //                   <h5>$${producto.precio}</h5>
-      //                   <span>Descripcion</span>
-      //                   <br>
-      //                   <p>Cantidad:</p>
-      //                   <select id="cantidad" class="form-select form-select-sm" aria-label=".form-select-sm example">
-      //                         <option>${listaStock.join("</option><option>")}</option>
-      //                   </select>
-      //                   <br>
-      //                   <button class="btn btn-primary btnComprar">Comprar</button>
-      //                    `
-      //       document.querySelector(padre).innerHTML = html;
-      // }
+      renderCarrito(padre, productosCarrito){
+            document.querySelector(padre).innerHTML = `
+                  <table class="table">
+                        <thead>
+                        <tr>
+                              <th scope="col"></th>
+                              <th scope="col">Producto</th>
+                              <th scope="col">Precio</th>
+                              <th scope="col">Cantidad</th>
+                              <th scope="col">Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody id="productosCarrito">
+
+                        </tbody>
+                </table>`
+            document.querySelector("#productosCarrito").innerHTML = productosCarrito.map( (producto) => {
+                  return(`    <tr>
+                              <th scope="row">
+                                    <button id="${producto.id}" class="btnRemove btn-carrito">X</button>   
+                              </th>
+                              <td>${producto.nombre} </td>
+                              <td>$${producto.precio}</td>
+                              <td>${producto.stock}</td>
+                              </tr>
+                              `)
+            })
+
+      }
 
 }
 
@@ -139,15 +188,11 @@ class ProductoController {
       }
 
       mostrarProductos(padre) {
-            // const eventoVerProducto = (e) => {
-            //       let id = e.target.id;
-            //       let seleccion = this.productoModel.buscarProducto(id);
-            //       this.productoView.verProducto(padre, seleccion);
-            // }
             this.productoView.renderProductos(padre, this.productoModel.productos)
       }
+
       mostrarCarrito(padre) {
-            this.productoView.renderCarrito(padre, this.productoModel.carrito)
+            this.productoView.renderCarrito(padre, this.productoModel.productosCarrito)
       }
 
 }
@@ -158,7 +203,6 @@ const app = new ProductoController(new ProductoModel(), new ProductoView());
 const routes = [
       { path: 'http://localhost:8080/', action: 'show' },
       { path: 'http://localhost:8080/agregar-producto', action: 'add'},
-      { path: 'http://localhost:8080/ver-productos', action: 'show' },
       { path: 'http://localhost:8080/ver-carrito', action: 'chart'}
 ];
     
