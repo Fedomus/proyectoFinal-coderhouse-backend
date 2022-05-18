@@ -13,31 +13,6 @@ class Producto {
 
 }
 
-class Carrito {
-
-      constructor(data){
-            this.productos = data.productos
-      }
-
-}
-
-
-fetch('http://localhost:8080/api/productos')
-.then( response => response.json())
-.then( data => {
-      const productos = data.productos.map(producto => {return producto})
-      localStorage.setItem('productos', JSON.stringify(productos));
-})
-.catch((err) => console.log(err))
-
-fetch('http://localhost:8080/api/carrito/1/productos')
-.then( response => response.json())
-.then( data => {
-      const productosCarrito = data.productos.map(producto => {return producto})
-      localStorage.setItem('carrito', JSON.stringify(productosCarrito));
-})
-.catch((err) => console.log(err))
-
 
 class ProductoModel {
 
@@ -90,50 +65,16 @@ class ProductoView {
       `
       }
 
-      renderProductos(padre, productos){
-            if(productos.lenght > 0{
-                  
+      async renderProductos(padre, productos){
+            await fetch('templates/cards.hbs')
+            .then(resp => resp.text())
+            .then(plantilla => {
+                  const template = Handlebars.compile(plantilla);
+                  const html = template({ productos })
+                  document.querySelector(padre).innerHTML = html;     
             })
-            const html = productos.map(producto => {
-                        return(`<div class="card" id="">
-                                    <img src="${producto.foto}" class="card-img-top img-cards">
-                                    <div class="card-body">
-                                          <h5 class="card-text">$${producto.precio}</h5>
-                                          <p class="card-text">${producto.descripcion}</p>
-                                          <p>stock: ${producto.stock}</p>
-                                          <form action="/api/carrito/1/productos" method="post">
-                                                <button id="" type="submit" class="btn agregar" name="id" value="${producto.id}">Agregar</button>
-                                          </form>
-                                          <button class="btn editar">
-                                                Editar
-                                          </button>
-                                          <button type="button" class="btn btn-eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                          Eliminar
-                                          </button>
-                                    </div>       
-                              </div>
-                              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                              <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                    <p>Se va a eliminar permanentmenete el producto, ¿desea continuar?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                          <button class="btn btnEliminar" id="${producto.id}">Aceptar</button>
-                                    </div>
-                              </div>
-                              </div>
-                              </div>`)
-            })
-            document.querySelector(padre).innerHTML = html;
             document.querySelectorAll('.btnEliminar').forEach( b => b.onclick = async (e) => {
                   let id = e.target.id
-                  console.log(id);
                   await fetch(`http://localhost:8080/api/productos/${id}`, {
                         method: 'DELETE', 
                   })
@@ -143,8 +84,9 @@ class ProductoView {
             })
       }
 
-      renderCarrito(padre, productosCarrito){
-            document.querySelector(padre).innerHTML = `
+      async renderCarrito(padre, productosCarrito){
+            if (productosCarrito.lenght) {
+                  document.querySelector(padre).innerHTML = `
                   <table class="table">
                         <thead>
                         <tr>
@@ -158,21 +100,19 @@ class ProductoView {
                         <tbody id="productosCarrito">
 
                         </tbody>
-                </table>`
-            document.querySelector("#productosCarrito").innerHTML = productosCarrito.map( (producto) => {
-                  return(`    <tr>
-                              <th scope="row">
-                                    <button id="${producto.id}" class="btnRemove btn-carrito">X</button>   
-                              </th>
-                              <td>${producto.nombre} </td>
-                              <td>$${producto.precio}</td>
-                              <td>${producto.stock}</td>
-                              </tr>
-                              `)
-            })
+                  </table>`
 
+                  await fetch('templates/chart.hbs')
+                  .then(resp => resp.text())
+                  .then(plantilla => {
+                        const template = Handlebars.compile(plantilla);
+                        const html = template({ productosCarrito })
+                        document.querySelector("#productosCarrito").innerHTML = html
+                  })
+            } else {
+                  document.querySelector(padre).innerHTML = `<p>Aún no hay productos agregados</p>`
+            }
       }
-
 }
 
 
@@ -188,13 +128,35 @@ class ProductoController {
       }
 
       mostrarProductos(padre) {
+            saveLocalStorageProductos()
             this.productoView.renderProductos(padre, this.productoModel.productos)
       }
 
       mostrarCarrito(padre) {
+            saveLocalStorageCarrito()
             this.productoView.renderCarrito(padre, this.productoModel.productosCarrito)
       }
 
+}
+
+async function saveLocalStorageProductos(){
+      fetch('http://localhost:8080/api/productos')
+      .then( response => response.json())
+      .then( data => {
+            const productos = data.productos.map(producto => {return producto})
+            localStorage.setItem('productos', JSON.stringify(productos));
+      })
+      .catch((err) => console.log(err))
+}
+
+async function saveLocalStorageCarrito(){
+      await fetch('http://localhost:8080/api/carrito/1/productos')
+      .then( response => response.json())
+      .then( data => {
+            const productosCarrito = data.productos.map(producto => {return producto})
+            localStorage.setItem('carrito', JSON.stringify(productosCarrito));
+      })
+      .catch((err) => console.log(err))
 }
 
 

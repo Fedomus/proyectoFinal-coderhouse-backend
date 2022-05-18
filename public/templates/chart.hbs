@@ -1,0 +1,12 @@
+{{#if productosCarrito.length}}
+      {{#each productosCarrito}}
+            <tr>
+                  <th scope="row">
+                        <button id="${producto.id}" class="btnRemove btn-carrito">X</button>   
+                  </th>
+                  <td>{{this.nombre}} </td>
+                  <td>${{this.precio}}</td>
+                  <td>{{this.stock}}</td>
+            </tr>
+      {{/each}}
+{{/if}}

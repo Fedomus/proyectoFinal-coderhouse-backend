@@ -1,0 +1,40 @@
+{{#if productos.length}}
+      {{#each productos}}
+            <div class="card" id="">
+                  <img src="{{this.foto}}" class="card-img-top img-cards">
+                  <div class="card-body">
+                        <h5 class="card-text">${{this.precio}}</h5>
+                        <p class="card-text">{{this.descripcion}}</p>
+                        <p>stock: {{this.stock}}</p>
+                        <form action="/api/carrito/1/productos" method="post">
+                              <button id="" type="submit" class="btn agregar" name="id" value="${producto.id}">Agregar</button>
+                        </form>
+                        <button class="btn editar">
+                              Editar
+                        </button>
+                        <button type="button" class="btn btn-eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Eliminar
+                        </button>
+                  </div>       
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                        <div class="modal-content">
+                              <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                    <p>Se va a eliminar permanentmenete el producto, ¿desea continuar?</p>
+                              </div>
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button class="btn btnEliminar" id="{{this.id}}">Aceptar</button>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      {{/each}}
+{{else}}
+      <p>No hay productos cargados</p>
+{{/if}}
