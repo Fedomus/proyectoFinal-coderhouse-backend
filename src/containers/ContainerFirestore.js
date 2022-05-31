@@ -1,5 +1,5 @@
 let admin = require('firebase-admin')
-let { FIRESTORE_FILE } = require('../config/globals')
+let { FIRESTORE_FILE } = require('../../config/globals')
 const FIRESTORE_PATH_FILE = require(FIRESTORE_FILE)
 
 admin.initializeApp({
@@ -43,3 +43,5 @@ class ContainerFirestore{
     }
 
 }
+
+module.exports = {ContainerFirestore};
