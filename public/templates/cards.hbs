@@ -6,15 +6,9 @@
                         <h5 class="card-text">${{this.precio}}</h5>
                         <p class="card-text">{{this.descripcion}}</p>
                         <p>stock: {{this.stock}}</p>
-                        <form action="/api/carrito/1/productos" method="post">
-                              <button id="" type="submit" class="btn agregar" name="id" value="${producto.id}">Agregar</button>
-                        </form>
-                        <button class="btn editar">
-                              Editar
-                        </button>
-                        <button type="button" class="btn btn-eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Eliminar
-                        </button>
+                        <button id="{{this.id}}" type="submit" class="btn btnAgregar" name="id" value="{{this.id}}">Agregar</button>
+                        <button id="{{this.id}}" class="btn btnEditar">Editar</button>
+                        <button type="button" class="btn btn-eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</button>
                   </div>       
             </div>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -29,7 +23,7 @@
                               </div>
                               <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button class="btn btnEliminar" id="{{this.id}}">Aceptar</button>
+                                    <button type="button" class="btn btnEliminar btn-primary" id="{{this.id}}">Aceptar</button>
                               </div>
                         </div>
                   </div>

@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": 11,
+    "timestamp": "28/5/2022 18:29:09",
+    "nombre": "Saxofón",
+    "descripcion": "Saxofon baritono marca Willy",
+    "codigo": "4e2sd2",
+    "foto": "https://cdn0.iconfinder.com/data/icons/music-151/64/saxofone_instrument_play_song_sing-256.png",
+    "precio": "75000",
+    "stock": 3
+  }
+]

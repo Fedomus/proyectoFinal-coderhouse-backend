@@ -23,7 +23,7 @@ app.get('/', (req, resp) => {
   resp.sendFile(__dirname + '/public/index.html')
 })
 
-app.get('/ver-carrito', (req, resp) => {
+app.get('/carrito', (req, resp) => {
   resp.sendFile(__dirname + '/public/index.html')
 })
 

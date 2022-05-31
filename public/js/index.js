@@ -13,14 +13,13 @@ class Producto {
 
 }
 
-
 class ProductoModel {
 
       constructor(){
             const productos = JSON.parse(localStorage.getItem('productos')) || [];
-            this.productos = productos.map(producto => new Producto(producto));
+            this.productos = productos.map(producto => {return new Producto(producto)});
             const productosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            this.productosCarrito = productosCarrito
+            this.productosCarrito = productosCarrito.map(producto => {return new Producto(producto)})
       }
 
       buscarProducto(id){
@@ -60,7 +59,7 @@ class ProductoView {
                         <label for="stock" class="form-label">Stock</label>
                         <input type="number" class="form-control" id="stock" name="stock">
                   </div>
-                  <input type="submit" value="Enviar">
+                  <input class="btn" type="submit" value="Enviar">
             </form>
       `
       }
@@ -71,21 +70,13 @@ class ProductoView {
             .then(plantilla => {
                   const template = Handlebars.compile(plantilla);
                   const html = template({ productos })
-                  document.querySelector(padre).innerHTML = html;     
+                  document.querySelector(padre).innerHTML = html;   
             })
-            document.querySelectorAll('.btnEliminar').forEach( b => b.onclick = async (e) => {
-                  let id = e.target.id
-                  await fetch(`http://localhost:8080/api/productos/${id}`, {
-                        method: 'DELETE', 
-                  })
-                  .then( res=> {return res.json()
-                  })
-                  .then( data => console.log(data))
-            })
+            eventoBoton();
       }
 
       async renderCarrito(padre, productosCarrito){
-            if (productosCarrito.lenght) {
+            if (productosCarrito != '') {
                   document.querySelector(padre).innerHTML = `
                   <table class="table">
                         <thead>
@@ -127,36 +118,50 @@ class ProductoController {
             this.productoView.renderForm(padre)
       }
 
-      mostrarProductos(padre) {
-            saveLocalStorageProductos()
+      async mostrarProductos(padre) {
+            await saveLocalStorage('http://localhost:8080/api/productos', 'productos')   
             this.productoView.renderProductos(padre, this.productoModel.productos)
       }
 
-      mostrarCarrito(padre) {
-            saveLocalStorageCarrito()
+      async mostrarCarrito(padre) {
+            await saveLocalStorage('http://localhost:8080/api/carrito/1/productos', 'carrito')
             this.productoView.renderCarrito(padre, this.productoModel.productosCarrito)
       }
-
 }
 
-async function saveLocalStorageProductos(){
-      fetch('http://localhost:8080/api/productos')
+
+async function saveLocalStorage(url, nombreLista){
+      await fetch(url)
       .then( response => response.json())
       .then( data => {
-            const productos = data.productos.map(producto => {return producto})
-            localStorage.setItem('productos', JSON.stringify(productos));
+            const list = data.productos.map(producto => {return producto})
+            localStorage.setItem(nombreLista, JSON.stringify(list));
       })
       .catch((err) => console.log(err))
 }
 
-async function saveLocalStorageCarrito(){
-      await fetch('http://localhost:8080/api/carrito/1/productos')
-      .then( response => response.json())
-      .then( data => {
-            const productosCarrito = data.productos.map(producto => {return producto})
-            localStorage.setItem('carrito', JSON.stringify(productosCarrito));
+function eventoBoton() {
+      document.querySelectorAll('.btnAgregar').forEach( b => b.onclick = async (e) => {
+            await fetch('http://localhost:8080/api/carrito/1/productos/', {
+                  body: {
+                        id: parseInt(e.target.id)
+                  },
+                  method: 'POST', 
+            })
+            .then( res=> {return res.json()
+            })
+            .catch(err => console.log(err))
       })
-      .catch((err) => console.log(err))
+      document.querySelectorAll('.btnEliminar').forEach( b => b.onclick = async (e) => {
+            await fetch('http://localhost:8080/api/productos/'+e.target.id, {
+                  method: 'DELETE', 
+            })
+            .then( (resp)=> {return resp.json()
+            })
+            .catch(err => console.log(err))
+            
+            await document.getElementById('exampleModal').modal('hide')
+      })
 }
 
 
@@ -165,7 +170,7 @@ const app = new ProductoController(new ProductoModel(), new ProductoView());
 const routes = [
       { path: 'http://localhost:8080/', action: 'show' },
       { path: 'http://localhost:8080/agregar-producto', action: 'add'},
-      { path: 'http://localhost:8080/ver-carrito', action: 'chart'}
+      { path: 'http://localhost:8080/carrito', action: 'chart'}
 ];
     
 const parseLocation = () => location.href;
@@ -186,6 +191,6 @@ const router = () => {
                   break
       }
 }
-    
+
 window.onload = () => { router(); }
 window.onchange = () => { router(); }

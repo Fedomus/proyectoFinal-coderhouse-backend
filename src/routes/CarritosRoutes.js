@@ -3,26 +3,28 @@ const { Router } = express;
 const routerCarritos = Router();
 
 
-const { CarritosContainer } = require('../models/CarritosContainer');
-const { ProductosContainer } = require('../models/ProductosContainer');
-let carritosContainer = new CarritosContainer();
-let productosContainer = new ProductosContainer();
+const { CarritosDaoArchivo } = require('../daos/carritos/CarritosDaoArchivo')
+let carritosDao = new CarritosDaoArchivo();
+const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
+let productDao = new ProductosDaoArchivo();
 
-routerCarritos.post('/', (req, resp) => {  //Crea un carrito y devuelve su id
+
+
+routerCarritos.post('/', (req, resp) => {  // Crea un carrito y devuelve su id
       let carritoCreado = {};
       carritoCreado.timestamp = new Date().toLocaleString();
       carritoCreado.productos = [];
-      let carrito = carritosContainer.saveCarrito(carritoCreado.timestamp, carritoCreado.productos);
+      let carrito = carritosDao.saveCarrito(carritoCreado.timestamp, carritoCreado.productos);
       resp.json({result: 'carrito creado', carrito: carrito})
 })
     
 routerCarritos.delete('/:id', (req, resp) => { // Vacía un carrito y lo elimina
-      let carrito = carritosContainer.getById(req.params.id);
+      let carrito = carritosDao.getById(req.params.id);
       if (carrito){
             for (const producto of carrito.productos){
-                  productosContainer.addProduct(producto.id, producto.stock); 
+                  productDao.addProduct(producto.id, +(producto.stock)); 
             }
-            carritosContainer.deleteById(carrito.id);
+            carritosDao.deleteById(carrito.id);
             resp.json({result: 'Carrito vaciado y eliminado'})
       } else {
             resp.json({result: 'No existe carrito con ese ID'})
@@ -30,7 +32,7 @@ routerCarritos.delete('/:id', (req, resp) => { // Vacía un carrito y lo elimina
 })
     
 routerCarritos.get('/:id/productos', (req, resp) => { // listar todos los productos guardados en el carrito
-      let miCarrito = carritosContainer.getById(parseInt(req.params.id));
+      let miCarrito = carritosDao.getById(parseInt(req.params.id));
       if(miCarrito){
             let productos = miCarrito.productos;
             resp.json({productos: productos})
@@ -43,25 +45,26 @@ routerCarritos.get('/:id/productos', (req, resp) => { // listar todos los produc
 routerCarritos.post('/:id/productos', (req, resp) => { // incorporar productos al carrito por su id de producto
       let idCarrito = req.params.id;
       let idProducto = req.body.id;
-      let producto = productosContainer.getById(idProducto);
+      let producto = productDao.getById(idProducto);
       if (producto.stock > 0){
-            carritosContainer.addProduct(idCarrito, producto);
-            productosContainer.susProd(req.body.id)
+            carritosDao.addProduct(idCarrito, producto);
+            productDao.susProduct(idProducto)
             resp.json({productoAñadido: producto})
       } else {
             resp.json({result: 'No hay stock disponible'})
       }
 })
-    
+
 routerCarritos.delete('/:id/productos/:id_prod', (req, resp) => { // Eliminar un producto del carrito por su id de carrito y de producto
       let idCarrito = req.params.id;
       let idProducto = req.params.id_prod;
       let carrito = carritosContainer.getById(idCarrito);
       let producto = carrito.productos.find( p => p.id == idProducto);
       let cantidad = producto.stock;
-      productosContainer.addProduct(idProducto, cantidad);
-      carritosContainer.deleteProducto(idCarrito, idProducto);
+      productDao.addProduct(idProducto, cantidad);
+      carritosDao.deleteProduct(idCarrito, idProducto);
       resp.json({result: 'Producto eliminado del carrito'});
 })
+
 
 module.exports = routerCarritos;
