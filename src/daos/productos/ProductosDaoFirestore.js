@@ -17,7 +17,7 @@ class ProductosDaoFirestore extends ContainerFirestore {
             let doc = this.collection.doc(this.id)
             let document = {
                   timestamp: timestamp,
-                  nombre: nombre, 
+                  nombre: nombre,  
                   descripcion: descripcion, 
                   codigo: codigo, 
                   foto: foto,

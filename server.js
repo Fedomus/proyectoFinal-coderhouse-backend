@@ -4,8 +4,6 @@ const routerProductos = require('./src/routes/ProductosRoutes');
 const routerCarritos = require('./src/routes/CarritosRoutes')
 const port = process.env.PORT || 8080;
 
-const { ProductosContainer } = require('./src/models/ProductosContainer');
-let productosContainer = new ProductosContainer();
 
 //----------------Middlewares----------------//
 app.use(express.json());

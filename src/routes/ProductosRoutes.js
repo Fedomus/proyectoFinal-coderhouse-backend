@@ -2,11 +2,11 @@ const express = require('express');
 const { Router } = express;
 const routerProductos = Router();
 
-const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
-let productDao = new ProductosDaoArchivo();
+// const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
+// let productDao = new ProductosDaoArchivo();
 
-// const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
-// let productDao = new ProductosDaoMongo();
+const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
+let productDao = new ProductosDaoMongo();
 
 routerProductos.get('/', (req, resp) => { // listar todos los productos disponibles ó un producto por su id (disponible para usuarios y administradores)
       let producto = productDao.getAll();

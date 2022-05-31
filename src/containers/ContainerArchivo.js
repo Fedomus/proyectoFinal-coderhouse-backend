@@ -61,4 +61,4 @@ class ContainerFile{
 
 }
 
-module.exports = { Container }
+module.exports = { ContainerFile }

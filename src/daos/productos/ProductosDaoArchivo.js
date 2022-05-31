@@ -1,4 +1,4 @@
-const { Container } = require('../containers/ContainerArchivo');
+const { ContainerFile } = require('../../containers/ContainerArchivo');
 
 class ProductosDaoArchivo extends ContainerFile {
 
@@ -49,4 +49,4 @@ class ProductosDaoArchivo extends ContainerFile {
 
 }
 
-module.exports = { ProductosContainer }
+module.exports = { ProductosDaoArchivo }

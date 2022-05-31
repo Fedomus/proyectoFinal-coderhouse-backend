@@ -1,4 +1,4 @@
-const { MONGO_URI } = require('../config/globals')
+const { MONGO_URI } = require('../../config/globals')
 const mongoose = require('mongoose')
 
 
@@ -9,7 +9,6 @@ class ContainerMongo {
                   useNewUrlParser: true, 
                   useUnifiedTopology: true
             }, () => console.log('Connected'))
-
             this.model = model;
       }
 
