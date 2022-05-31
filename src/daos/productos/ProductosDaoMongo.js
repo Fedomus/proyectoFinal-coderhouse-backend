@@ -27,20 +27,20 @@ class ProductosDaoMongo extends ContainerMongo{
                   stock: stock
             }
             const saveProductModel = new productModel.productos(product)
-            let productSave = await saveProductModel.save()
-            console.log(productSave);
+            let productSaved = await saveProductModel.save()
+            console.log(productSaved);
       }
 
       async addProduct(id, cantidad){
             let product = this.getById(id)
             let stock = product.stock;
-            return await this.model.updateOne({id: id}, {$set : {stock : stock+cantidad}})
+            return this.updateById(id, {stock : stock+cantidad})
       }
 
       async susProduct(id){
             let product = this.getById(id)
             let stock = product.stock;
-            return await this.model.updateOne({id: id}, {$set : {stock : stock-1}})
+            return this.updateById(id, {stock : stock-1})
       }
 
 } 

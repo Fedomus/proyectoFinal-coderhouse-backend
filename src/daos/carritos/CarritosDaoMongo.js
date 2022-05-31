@@ -21,8 +21,8 @@ class CarritoDaoMongo extends ContainerMongo{
                   productos: productos
             }
             const saveCarritoModel = new carritoModel.carritos(carrito)
-            let carritoSave = await saveCarritoModel.save()
-            console.log(carritoSave);
+            let carritoSaved = await saveCarritoModel.save()
+            console.log(carritoSaved);
       }
 
       async addProduct(id, producto){ 
@@ -35,8 +35,9 @@ class CarritoDaoMongo extends ContainerMongo{
                   } else {
                         productoElegido.stock ++;
                   } 
-                  this.updateById(id, carrito) 
+                  this.updateById(id, {productos: carrito.productos}) 
             } 
+            
       }
 
       async deleteProduct(idCarrito, idProducto){
@@ -44,7 +45,7 @@ class CarritoDaoMongo extends ContainerMongo{
             let producto = carrito.productos.find( p => p.id == idProducto);
             let indice = carrito.productos.indexOf(producto);
             carrito.productos.splice(indice, 1)
-            this.updateById(idCarrito, carrito) 
+            this.updateById(idCarrito, {productos: carrito.productos}) 
       }
 
 } 
