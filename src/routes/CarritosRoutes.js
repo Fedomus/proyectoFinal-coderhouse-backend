@@ -2,12 +2,23 @@ const express = require('express');
 const { Router } = express;
 const routerCarritos = Router();
 
+//----------------------ARCHIVO------------------------------------//
+// const { CarritosDaoArchivo } = require('../daos/carritos/CarritosDaoArchivo')
+// let carritosDao = new CarritosDaoArchivo();
+// const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
+// let productDao = new ProductosDaoArchivo();
 
-const { CarritosDaoArchivo } = require('../daos/carritos/CarritosDaoArchivo')
-let carritosDao = new CarritosDaoArchivo();
-const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
-let productDao = new ProductosDaoArchivo();
+//-----------------------MONGODB-----------------------------------//
+const { CarritosDaoMongo } = require('../daos/carritos/CarritosDaoMongo')
+let carritosDao = new CarritosDaoMongo();
+const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
+let productDao = new ProductosDaoMongo();
 
+//----------------------FIRESTORE----------------------------------//
+// const { CarritosDaoFirestore } = require('../daos/carritos/CarritosDaoFirestore')
+// let carritosDao = new CarritosDaoFirestore();
+// const { ProductosDaoFirestore } = require('../daos/productos/ProductosDaoFirestore')
+// let productDao = new ProductosDaoFirestore();
 
 
 routerCarritos.post('/', (req, resp) => {  // Crea un carrito y devuelve su id

@@ -2,14 +2,17 @@ const express = require('express');
 const { Router } = express;
 const routerProductos = Router();
 
+//--------------------------------ARCHIVO-----------------------------------------//
 // const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
 // let productDao = new ProductosDaoArchivo();
 
-// const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
-// let productDao = new ProductosDaoMongo();
+//--------------------------------MONGODB----------------------------------------//
+const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
+let productDao = new ProductosDaoMongo();
 
-const { ProductosDaoFirestore } = require('../daos/productos/ProductosDaoFirestore')
-let productDao = new ProductosDaoFirestore();
+//--------------------------------FIRESTORE-------------------------------------//
+// const { ProductosDaoFirestore } = require('../daos/productos/ProductosDaoFirestore')
+// let productDao = new ProductosDaoFirestore();
 
 routerProductos.get('/', (req, resp) => { // listar todos los productos disponibles ó un producto por su id (disponible para usuarios y administradores)
       let producto = productDao.getAll();

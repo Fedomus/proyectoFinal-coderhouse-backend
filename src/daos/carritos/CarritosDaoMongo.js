@@ -1,7 +1,7 @@
 const ContainerMongo = require('../../containers/ContainerMongo')
 const carritoModel = require('../../models/carrito')
 
-class CarritoDaoMongo extends ContainerMongo{
+class CarritosDaoMongo extends ContainerMongo{
 
       constructor() {
             super(carritoModel);
@@ -50,4 +50,4 @@ class CarritoDaoMongo extends ContainerMongo{
 
 } 
 
-module.exports = { CarritoDaoMongo }
+module.exports = { CarritosDaoMongo }
