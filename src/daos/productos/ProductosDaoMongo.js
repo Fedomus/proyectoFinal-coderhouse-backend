@@ -1,11 +1,11 @@
 const ContainerMongo = require('../../containers/ContainerMongo')
-const productSchema = require('../../models/producto')
+const productModel = require('../../models/producto')
 
 
 class ProductosDaoMongo extends ContainerMongo{
 
       constructor() {
-            super(productSchema);
+            super(productModel);
             let productos = this.getAll();
             let ultimo = productos[productos.length-1];
             if (ultimo){
