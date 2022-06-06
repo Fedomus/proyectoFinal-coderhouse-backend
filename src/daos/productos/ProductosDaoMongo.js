@@ -1,4 +1,4 @@
-import productModel from '../../models/producto.js'
+import * as productModel from '../../models/producto.js'
 import ContainerMongo from '../../containers/ContainerMongo.js'
 
 export class ProductosDaoMongo extends ContainerMongo{

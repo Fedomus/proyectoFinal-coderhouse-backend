@@ -5,22 +5,22 @@ const { Router } = express;
 const routerCarritos = Router();
 
 //----------------------ARCHIVO------------------------------------//
-// const { CarritosDaoArchivo } = require('../daos/carritos/CarritosDaoArchivo')
+// import { CarritosDaoArchivo } from '../daos/carritos/CarritosDaoArchivo.js'
 // let carritosDao = new CarritosDaoArchivo();
-// const { ProductosDaoArchivo } = require('../daos/productos/ProductosDaoArchivo');
+// import { ProductosDaoArchivo } from '../daos/productos/ProductosDaoArchivo.js'
 // let productDao = new ProductosDaoArchivo();
 
 //-----------------------MONGODB-----------------------------------//
-import { CarritosDaoMongo } from '../daos/carritos/CarritosDaoMongo.js'
-let carritosDao = new CarritosDaoMongo();
-import { ProductosDaoMongo } from '../daos/productos/ProductosDaoMongo.js'
-let productDao = new ProductosDaoMongo();
+// import { CarritosDaoMongo } from '../daos/carritos/CarritosDaoMongo.js'
+// let carritosDao = new CarritosDaoMongo();
+// import { ProductosDaoMongo } from '../daos/productos/ProductosDaoMongo.js'
+// let productDao = new ProductosDaoMongo();
 
 //----------------------FIRESTORE----------------------------------//
-// const { CarritosDaoFirestore } = require('../daos/carritos/CarritosDaoFirestore')
-// let carritosDao = new CarritosDaoFirestore();
-// const { ProductosDaoFirestore } = require('../daos/productos/ProductosDaoFirestore')
-// let productDao = new ProductosDaoFirestore();
+import { CarritosDaoFirestore } from '../daos/carritos/CarritosDaoFirestore.js'
+let carritosDao = new CarritosDaoFirestore();
+import { ProductosDaoFirestore } from '../daos/productos/ProductosDaoFirestore.js'
+let productDao = new ProductosDaoFirestore();
 
 
 routerCarritos.post('/', (req, resp) => {  // Crea un carrito y devuelve su id

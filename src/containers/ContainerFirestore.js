@@ -1,9 +1,8 @@
-import * as admin from 'firebase-admin'
-import { FIRESTORE_FILE } from '../../config/globals.js'
-import * as FIRESTORE_PATH_FILE from FIRESTORE_FILE
+import admin from 'firebase-admin'
+import {FIRESTORE_FILE} from '../../config/globals.js'
 
 admin.initializeApp({
-  credential: admin.credential.cert(FIRESTORE_PATH_FILE)
+  credential: admin.credential.cert(FIRESTORE_FILE)
 });
 
 const db = admin.firestore()

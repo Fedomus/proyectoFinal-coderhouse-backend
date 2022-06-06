@@ -42,5 +42,4 @@ export class ProductosDaoFirestore extends ContainerFirestore {
 
 }
 
-module.exports = { ProductosDaoFirestore }
 
