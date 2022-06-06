@@ -15,9 +15,10 @@ export class ContainerFirestore{
 
     async getAll(){
       let result = await this.collection.get()
-      result = result.docs.map(doc => 
-        { return doc.data() }
-      )
+      result = result.docs.map(doc => ({ 
+        id: doc.id,
+        data: doc.data()
+      }))
       return result
     }
 
