@@ -14,15 +14,16 @@ export class ProductosDaoFirestore extends ContainerFirestore {
       }
 
       async saveProduct(timestamp, nombre, descripcion, codigo, foto, precio, stock){
-            let doc = this.collection.doc(this.id)
+            let doc = this.collection.doc(`${this.id}`)
             let document = {
+                  id: this.id,
                   timestamp: timestamp,
                   nombre: nombre,  
                   descripcion: descripcion, 
                   codigo: codigo, 
                   foto: foto,
-                  precio: precio, 
-                  stock: stock
+                  precio: parseInt(precio), 
+                  stock: parseInt(stock)
             }
             let productSaved = await doc.create(document)
             return productSaved

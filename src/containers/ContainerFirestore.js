@@ -5,11 +5,10 @@ admin.initializeApp({
   credential: admin.credential.cert(FIRESTORE_FILE)
 });
 
-const db = admin.firestore()
-
 export class ContainerFirestore{
 
     constructor(collection){
+      const db = admin.firestore()
       this.collection = db.collection(collection)
       console.log(`Base conectada con la colección ${collection}`)
     }
