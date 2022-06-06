@@ -1,8 +1,7 @@
-const ContainerMongo = require('../../containers/ContainerMongo')
-const productModel = require('../../models/producto')
+import productModel from '../../models/producto.js'
+import ContainerMongo from '../../containers/ContainerMongo.js'
 
-
-class ProductosDaoMongo extends ContainerMongo{
+export class ProductosDaoMongo extends ContainerMongo{
 
       constructor() {
             super(productModel);
@@ -19,7 +18,7 @@ class ProductosDaoMongo extends ContainerMongo{
             const product = {
                   id: this.id,
                   timestamp: timestamp,
-                  nombre: nombre, 
+                  nombre: nombre,
                   descripcion: descripcion, 
                   codigo: codigo, 
                   foto: foto, 
@@ -45,5 +44,3 @@ class ProductosDaoMongo extends ContainerMongo{
 
 } 
 
-
-module.exports = { ProductosDaoMongo }

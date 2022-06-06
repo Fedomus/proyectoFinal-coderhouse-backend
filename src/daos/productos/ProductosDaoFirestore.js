@@ -1,6 +1,6 @@
-const { ContainerFirestore } = require('../../containers/ContainerFirestore')
+import { ContainerFirestore } from '../../containers/ContainerFirestore.js';
 
-class ProductosDaoFirestore extends ContainerFirestore {
+export class ProductosDaoFirestore extends ContainerFirestore {
 
       constructor(){
             super('productos')

@@ -1,4 +1,5 @@
-const express = require('express');
+import express from 'express'
+
 const { Router } = express;
 const routerProductos = Router();
 
@@ -7,7 +8,7 @@ const routerProductos = Router();
 // let productDao = new ProductosDaoArchivo();
 
 //--------------------------------MONGODB----------------------------------------//
-const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
+import {ProductosDaoMongo} from '../daos/productos/ProductosDaoMongo.js'
 let productDao = new ProductosDaoMongo();
 
 //--------------------------------FIRESTORE-------------------------------------//
@@ -54,4 +55,4 @@ routerProductos.delete('/:id', (req, resp) => { // Borra un producto por su id (
       resp.json({productoEliminado: productoElegido})
 });
 
-module.exports = routerProductos;
+export default routerProductos

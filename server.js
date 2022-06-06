@@ -1,9 +1,11 @@
-const express = require('express');
-const app = express();
-const routerProductos = require('./src/routes/ProductosRoutes');
-const routerCarritos = require('./src/routes/CarritosRoutes')
-const port = process.env.PORT || 8080;
+import express from 'express'
+import routerProductos from './src/routes/ProductosRoutes.js'
+import routerCarritos from './src/routes/CarritosRoutes.js'
+import path from "path"
 
+const __dirname = path.resolve();
+const app = express();
+const port = process.env.PORT || 8080;
 
 //----------------Middlewares----------------//
 app.use(express.json());

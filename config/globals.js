@@ -1,6 +1,5 @@
-require('dotenv').config()
+import * as dotenv from 'dotenv'
+dotenv.config()
 
-module.exports = {
-      MONGO_URI : process.env.MONGO_URI || '',
-      FIRESTORE_FILE : process.env.FIRESTORE_FILE || ''
-}
+export const MONGO_URI = process.env.MONGO_URI || ''
+export const FIRESTORE_FILE = process.env.FIRESTORE_FILE || ''

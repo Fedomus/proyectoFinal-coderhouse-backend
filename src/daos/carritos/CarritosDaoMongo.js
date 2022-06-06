@@ -1,7 +1,7 @@
-const ContainerMongo = require('../../containers/ContainerMongo')
-const carritoModel = require('../../models/carrito')
+import ContainerMongo from '../../containers/ContainerMongo.js'
+import carritoModel from '../../models/carrito.js'
 
-class CarritosDaoMongo extends ContainerMongo{
+export class CarritosDaoMongo extends ContainerMongo{
 
       constructor() {
             super(carritoModel);
@@ -50,4 +50,3 @@ class CarritosDaoMongo extends ContainerMongo{
 
 } 
 
-module.exports = { CarritosDaoMongo }

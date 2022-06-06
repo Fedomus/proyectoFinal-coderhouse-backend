@@ -1,8 +1,8 @@
-const { MONGO_URI } = require('../../config/globals')
-const mongoose = require('mongoose')
+import {MONGO_URI} from '../../config/globals.js'
+import mongoose from 'mongoose'
 
 
-class ContainerMongo {
+export default class ContainerMongo {
 
       constructor(model) {
             mongoose.connect(MONGO_URI, {
@@ -13,7 +13,7 @@ class ContainerMongo {
       }
 
       async getAll(){
-            return await this.model.find()
+            return await this.model.find({})
       }
 
       async getById(id) {
@@ -31,4 +31,3 @@ class ContainerMongo {
 }
 
 
-module.exports = ContainerMongo;

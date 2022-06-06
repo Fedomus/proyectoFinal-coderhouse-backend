@@ -1,6 +1,6 @@
-let admin = require('firebase-admin')
-let { FIRESTORE_FILE } = require('../../config/globals')
-const FIRESTORE_PATH_FILE = require(FIRESTORE_FILE)
+import * as admin from 'firebase-admin'
+import { FIRESTORE_FILE } from '../../config/globals.js'
+import * as FIRESTORE_PATH_FILE from FIRESTORE_FILE
 
 admin.initializeApp({
   credential: admin.credential.cert(FIRESTORE_PATH_FILE)
@@ -8,7 +8,7 @@ admin.initializeApp({
 
 const db = admin.firestore()
 
-class ContainerFirestore{
+export class ContainerFirestore{
 
     constructor(collection){
       this.collection = db.collection(collection)
@@ -44,4 +44,3 @@ class ContainerFirestore{
 
 }
 
-module.exports = {ContainerFirestore};

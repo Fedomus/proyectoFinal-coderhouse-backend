@@ -1,5 +1,7 @@
-const express = require('express');
+import express from 'express'
+
 const { Router } = express;
+
 const routerCarritos = Router();
 
 //----------------------ARCHIVO------------------------------------//
@@ -9,9 +11,9 @@ const routerCarritos = Router();
 // let productDao = new ProductosDaoArchivo();
 
 //-----------------------MONGODB-----------------------------------//
-const { CarritosDaoMongo } = require('../daos/carritos/CarritosDaoMongo')
+import { CarritosDaoMongo } from '../daos/carritos/CarritosDaoMongo.js'
 let carritosDao = new CarritosDaoMongo();
-const { ProductosDaoMongo } = require('../daos/productos/ProductosDaoMongo')
+import { ProductosDaoMongo } from '../daos/productos/ProductosDaoMongo.js'
 let productDao = new ProductosDaoMongo();
 
 //----------------------FIRESTORE----------------------------------//
@@ -77,5 +79,4 @@ routerCarritos.delete('/:id/productos/:id_prod', (req, resp) => { // Eliminar un
       resp.json({result: 'Producto eliminado del carrito'});
 })
 
-
-module.exports = routerCarritos;
+export default routerCarritos

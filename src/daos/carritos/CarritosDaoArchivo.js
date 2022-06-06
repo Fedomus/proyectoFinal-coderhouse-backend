@@ -1,6 +1,6 @@
-const { ContainerFile } = require('../../containers/ContainerArchivo');
+import { ContainerFile } from '../../containers/ContainerArchivo.js'
 
-class CarritosDaoArchivo extends ContainerFile {
+export class CarritosDaoArchivo extends ContainerFile {
 
       constructor() {
             super('./src/data/carritos.json');
@@ -53,5 +53,3 @@ class CarritosDaoArchivo extends ContainerFile {
 
 }
 
-
-module.exports = { CarritosDaoArchivo }
